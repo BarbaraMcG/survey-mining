@@ -71,12 +71,17 @@ import matplotlib.pyplot as plt; plt.rcdefaults()
 
 test = raw_input("Is this a test? Reply yes or no. Leave empty for yes.")
 target_word = raw_input("What is the target word for the survey? Leave empty for pride")  # 'embarassment'#'success'
+    
+if target_word == "":
+    target_word = "pride"
+    
 input_directory = raw_input("What is the path to the input directory where the spread sheet with the responses is? Leave empty for default (...\data\input\Telkom_pride_embarassment\Telkom_pride\). The input spread sheet should have the same name as the target word and the responses should be in the sheet whose name is the target word.")
 output_directory = raw_input("What is the path to the output directory where the output files should be saved? Leave empty for default (...\data\output\Telkom_pride_embarassment\Telkom_pride\).")
 acronyms_file = raw_input("What is the name of the file containing the acronyms to be excluded from the list of keywords? Leave empty for default (acronyms_list_default.txt). Note that this file should be in the input folder.")
 min_similarity_score = raw_input("What is the minimum threshold for the semantic similarity score? Leave empty for 0.8.")
 column_number = raw_input("What is the number of the column containing the survey responses in the input spread sheet? Leave empty for 0.")  # 12
 n_words = raw_input("What is the maximum number of words to include in the plots? Leave empty for 10.")
+min_freq = raw_input("What is the frequency threshold above which you want to view keywords in the network graph? Leave empty for 3.")
 
 # ---------------------------------------
 # File and directory names
@@ -92,7 +97,7 @@ if not os.path.exists(path_plots):
 output_file_freq_name = 'Keywords_frequency_' + target_word + "_" + time.strftime("%d%m%Y") + ".csv"
 output_word_cloud = 'word_cloud_' + target_word + "_" + time.strftime("%d%m%Y") + ".png"
 output_bar_plot = 'bar_plot_' + target_word + "_" + time.strftime("%d%m%Y") + ".png"
-output_graph = 'graph_' + target_word + "_" + time.strftime("%d%m%Y") + ".png"
+output_graph = 'graph_' + target_word + "_" + time.strftime("%d%m%Y") + "_freqthreshold" + str(min_freq) + ".png"
 output_file_cluster = 'Keywords_frequency_'+ target_word + "_" + time.strftime("%d%m%Y") + "_clustered.csv"
 output_file_keywords_name = 'Responses_keywords_' + target_word + "_" + time.strftime("%d%m%Y") + ".csv"
 output_file_sim_name = 'Keywords_frequency_'+ target_word + "_" + time.strftime("%d%m%Y") + "_similarities.csv"
@@ -101,9 +106,6 @@ output_file_sim_name = 'Keywords_frequency_'+ target_word + "_" + time.strftime(
 
 if test == "":
     test = "yes"
-    
-if target_word == "":
-    target_word = "pride"
     
 if min_similarity_score == "":
     min_similarity_score = 0.8
@@ -132,6 +134,11 @@ if output_directory == "":
 assert os.path.exists(input_directory), "I did not find the input directory "+str(input_directory)
 assert os.path.exists(output_directory), "I did not find the output directory "+str(output_directory)
 
+if min_freq == "":
+    min_freq = 3
+else:
+    min_freq = int(min_freq)
+    
 # Test files:    
     
 if test == "yes":
@@ -164,7 +171,6 @@ if target_word == "pride" or target_word == "embarassment":
 assert os.path.exists(os.path.join(input_directory, acronyms_file)), "I did not find the file for acronyms "+str(acronyms_file) + " in " + str(input_directory)
 with open(os.path.join(input_directory, acronyms_file)) as acronyms_f:
     acronyms = acronyms_f.read().splitlines()
-
 #acronyms = ['SA', 'HR', 'ICT', 'IT']
 
 
@@ -245,5 +251,5 @@ from create_graph_27112016 import create_graph
 
 skip = raw_input("Do you want to skip this step? Leave empty if you want this.")
 if skip != "yes" and skip != "":
-    create_graph(output_directory, output_file_keywords_name, path_plots, output_graph.replace(".png", "_keywords.png"))
+    create_graph(output_directory, output_file_keywords_name, path_plots, output_graph.replace(".png", "_keywords.png"), min_freq)
     
