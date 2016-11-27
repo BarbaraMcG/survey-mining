@@ -21,10 +21,9 @@ def cluster_keywords(test, target_word, min_similarity_score, output_directory, 
     #path = os.getcwd().replace("code", "data")# get path of current file, then change sub directory from "code" to "data"
     #path_in = path + r'\output\Telkom_pride_embarassment\Telkom_' + target_word
     
-    if test == "yes":
-        kwfreq_file = kwfreq_file.replace(".csv", "_test.csv")
-        sim_file = sim_file.replace(".csv", "_test.csv")
-        output_file = output_file.replace(".csv", "_test.csv")
+    #if test == "yes":
+    #    kwfreq_file = kwfreq_file.replace(".csv", "_test.csv")
+    #    sim_file = sim_file.replace(".csv", "_test.csv")
 
 
     # Read list of keywords:
@@ -63,7 +62,7 @@ def cluster_keywords(test, target_word, min_similarity_score, output_directory, 
 
     clustered_words = list()
 
-    with open(os.path.join(output_directory, output_file), 'wb') as outfile:
+    with open(os.path.join(output_directory, output_file_cluster), 'wb') as outfile:
         output = csv.writer(outfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         output.writerow(["Keyword cluster", "Keyword cluster name", "Number of responses of keyword cluster",
         "Highest-frequency adjective for cluster"
