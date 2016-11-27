@@ -86,12 +86,6 @@ min_freq = raw_input("What is the frequency threshold above which you want to vi
 # ---------------------------------------
 # File and directory names
 # ---------------------------------------
-
-#path = os.getcwd().replace("code", "data")
-#path_plots = os.getcwd() + r'\plots'
-path_plots = os.path.join(output_directory, "plots")
-if not os.path.exists(path_plots):
-    os.makedirs(path_plots)
    
 #path_keyword_freq = path + r'\output\Telkom_pride_embarassment\Telkom_' + target_word
 output_file_freq_name = 'Keywords_frequency_' + target_word + "_" + time.strftime("%d%m%Y") + ".csv"
@@ -134,6 +128,12 @@ if output_directory == "":
 assert os.path.exists(input_directory), "I did not find the input directory "+str(input_directory)
 assert os.path.exists(output_directory), "I did not find the output directory "+str(output_directory)
 
+#path = os.getcwd().replace("code", "data")
+#path_plots = os.getcwd() + r'\plots'
+path_plots = os.path.join(output_directory, "plots")
+if not os.path.exists(path_plots):
+    os.makedirs(path_plots)
+    
 if min_freq == "":
     min_freq = 3
 else:
