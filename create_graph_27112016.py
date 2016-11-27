@@ -8,7 +8,7 @@ import time
 import os
 import csv
 
-def create_graph(input_path, input_file, output_path, output_file):
+def create_graph(input_path, input_file, output_path, output_file, min_freq):
     
     # Create empty graph:
 
@@ -19,8 +19,9 @@ def create_graph(input_path, input_file, output_path, output_file):
     id_response = ""
     keyword_nodes = list()
     kw2response = dict() # maps a kw to the list of responses containing it
-    
+
     with open(os.path.join(input_path, input_file), 'rb') as csv_file:
+        next(csv_file)
         res_reader = csv.reader(csv_file, delimiter=',')
         my_count = 0
         for row in res_reader:
@@ -34,8 +35,16 @@ def create_graph(input_path, input_file, output_path, output_file):
             else:
                 kw2response[kw] = [id_response]
             
+    
     keyword_nodes = list(set(keyword_nodes))
     keyword_nodes.sort()
+    
+    # only keep keywords that occur in more than min_response response:
+    for kw in keyword_nodes:
+        if len(kw2response[kw]) < min_freq + 1:
+            keyword_nodes.remove(kw)
+    
+    
     for kw in keyword_nodes:
         G.add_node(kw)
     #print(str(G.nodes()))
