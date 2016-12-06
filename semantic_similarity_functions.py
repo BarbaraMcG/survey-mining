@@ -1,4 +1,4 @@
-# Functions for Resofact analysis
+# Functions for semantic similarity
 
 import sys
 import nltk
